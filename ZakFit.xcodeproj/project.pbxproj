@@ -14,19 +14,11 @@
 			remoteGlobalIDString = CF45E26B2ECB42FF00CBDDDC;
 			remoteInfo = ZakFit;
 		};
-		CF45E2842ECB430100CBDDDC /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = CF45E2642ECB42FF00CBDDDC /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = CF45E26B2ECB42FF00CBDDDC;
-			remoteInfo = ZakFit;
-		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		CF45E26C2ECB42FF00CBDDDC /* ZakFit.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ZakFit.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CF45E2792ECB430100CBDDDC /* ZakFitTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ZakFitTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		CF45E2832ECB430100CBDDDC /* ZakFitUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ZakFitUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -38,11 +30,6 @@
 		CF45E27C2ECB430100CBDDDC /* ZakFitTests */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = ZakFitTests;
-			sourceTree = "<group>";
-		};
-		CF45E2862ECB430100CBDDDC /* ZakFitUITests */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			path = ZakFitUITests;
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
@@ -62,13 +49,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		CF45E2802ECB430100CBDDDC /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -77,7 +57,6 @@
 			children = (
 				CF45E26E2ECB42FF00CBDDDC /* ZakFit */,
 				CF45E27C2ECB430100CBDDDC /* ZakFitTests */,
-				CF45E2862ECB430100CBDDDC /* ZakFitUITests */,
 				CF45E26D2ECB42FF00CBDDDC /* Products */,
 			);
 			sourceTree = "<group>";
@@ -87,7 +66,6 @@
 			children = (
 				CF45E26C2ECB42FF00CBDDDC /* ZakFit.app */,
 				CF45E2792ECB430100CBDDDC /* ZakFitTests.xctest */,
-				CF45E2832ECB430100CBDDDC /* ZakFitUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -140,29 +118,6 @@
 			productReference = CF45E2792ECB430100CBDDDC /* ZakFitTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
-		CF45E2822ECB430100CBDDDC /* ZakFitUITests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = CF45E2932ECB430100CBDDDC /* Build configuration list for PBXNativeTarget "ZakFitUITests" */;
-			buildPhases = (
-				CF45E27F2ECB430100CBDDDC /* Sources */,
-				CF45E2802ECB430100CBDDDC /* Frameworks */,
-				CF45E2812ECB430100CBDDDC /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				CF45E2852ECB430100CBDDDC /* PBXTargetDependency */,
-			);
-			fileSystemSynchronizedGroups = (
-				CF45E2862ECB430100CBDDDC /* ZakFitUITests */,
-			);
-			name = ZakFitUITests;
-			packageProductDependencies = (
-			);
-			productName = ZakFitUITests;
-			productReference = CF45E2832ECB430100CBDDDC /* ZakFitUITests.xctest */;
-			productType = "com.apple.product-type.bundle.ui-testing";
-		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -177,10 +132,6 @@
 						CreatedOnToolsVersion = 26.1.1;
 					};
 					CF45E2782ECB430100CBDDDC = {
-						CreatedOnToolsVersion = 26.1.1;
-						TestTargetID = CF45E26B2ECB42FF00CBDDDC;
-					};
-					CF45E2822ECB430100CBDDDC = {
 						CreatedOnToolsVersion = 26.1.1;
 						TestTargetID = CF45E26B2ECB42FF00CBDDDC;
 					};
@@ -202,7 +153,6 @@
 			targets = (
 				CF45E26B2ECB42FF00CBDDDC /* ZakFit */,
 				CF45E2782ECB430100CBDDDC /* ZakFitTests */,
-				CF45E2822ECB430100CBDDDC /* ZakFitUITests */,
 			);
 		};
 /* End PBXProject section */
@@ -216,13 +166,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		CF45E2772ECB430100CBDDDC /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		CF45E2812ECB430100CBDDDC /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -246,13 +189,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		CF45E27F2ECB430100CBDDDC /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -260,11 +196,6 @@
 			isa = PBXTargetDependency;
 			target = CF45E26B2ECB42FF00CBDDDC /* ZakFit */;
 			targetProxy = CF45E27A2ECB430100CBDDDC /* PBXContainerItemProxy */;
-		};
-		CF45E2852ECB430100CBDDDC /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = CF45E26B2ECB42FF00CBDDDC /* ZakFit */;
-			targetProxy = CF45E2842ECB430100CBDDDC /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -393,7 +324,7 @@
 		CF45E28E2ECB430100CBDDDC /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_APPICON_NAME = ZakFitAppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
@@ -425,7 +356,7 @@
 		CF45E28F2ECB430100CBDDDC /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_APPICON_NAME = ZakFitAppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
@@ -498,46 +429,6 @@
 			};
 			name = Release;
 		};
-		CF45E2942ECB430100CBDDDC /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = P9TXP3LGTK;
-				GENERATE_INFOPLIST_FILE = YES;
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.sebastiendaguin.ZakFitUITests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				STRING_CATALOG_GENERATE_SYMBOLS = NO;
-				SWIFT_APPROACHABLE_CONCURRENCY = YES;
-				SWIFT_EMIT_LOC_STRINGS = NO;
-				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_TARGET_NAME = ZakFit;
-			};
-			name = Debug;
-		};
-		CF45E2952ECB430100CBDDDC /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = P9TXP3LGTK;
-				GENERATE_INFOPLIST_FILE = YES;
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.sebastiendaguin.ZakFitUITests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				STRING_CATALOG_GENERATE_SYMBOLS = NO;
-				SWIFT_APPROACHABLE_CONCURRENCY = YES;
-				SWIFT_EMIT_LOC_STRINGS = NO;
-				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_TARGET_NAME = ZakFit;
-			};
-			name = Release;
-		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -564,15 +455,6 @@
 			buildConfigurations = (
 				CF45E2912ECB430100CBDDDC /* Debug */,
 				CF45E2922ECB430100CBDDDC /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		CF45E2932ECB430100CBDDDC /* Build configuration list for PBXNativeTarget "ZakFitUITests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				CF45E2942ECB430100CBDDDC /* Debug */,
-				CF45E2952ECB430100CBDDDC /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

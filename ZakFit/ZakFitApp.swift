@@ -9,9 +9,11 @@ import SwiftUI
 
 @main
 struct ZakFitApp: App {
+    @State private var tabViewModel: TabViewModel = .init()
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            MainTabView()
+                .environment(tabViewModel)
         }
     }
 }

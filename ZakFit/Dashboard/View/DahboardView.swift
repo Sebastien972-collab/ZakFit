@@ -11,7 +11,6 @@ struct DasboardView: View {
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 16) {
-                
                 // MARK: HEADER
                 ZStack {
                     SunsetGradientView()
@@ -68,6 +67,9 @@ struct DasboardView: View {
                 }
                 Spacer()
             }
+        }
+        .background {
+            Color.zackFitBackground.ignoresSafeArea(.all)
         }
     }
 }

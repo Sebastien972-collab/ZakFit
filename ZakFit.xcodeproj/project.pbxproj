@@ -6,6 +6,10 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		CF45E3302ECB579200CBDDDC /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = CF45E32F2ECB579200CBDDDC /* README.md */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
 		CF45E27A2ECB430100CBDDDC /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -19,6 +23,7 @@
 /* Begin PBXFileReference section */
 		CF45E26C2ECB42FF00CBDDDC /* ZakFit.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ZakFit.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CF45E2792ECB430100CBDDDC /* ZakFitTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ZakFitTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		CF45E32F2ECB579200CBDDDC /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -55,6 +60,7 @@
 		CF45E2632ECB42FF00CBDDDC = {
 			isa = PBXGroup;
 			children = (
+				CF45E32F2ECB579200CBDDDC /* README.md */,
 				CF45E26E2ECB42FF00CBDDDC /* ZakFit */,
 				CF45E27C2ECB430100CBDDDC /* ZakFitTests */,
 				CF45E26D2ECB42FF00CBDDDC /* Products */,
@@ -162,6 +168,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CF45E3302ECB579200CBDDDC /* README.md in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct DasboardView: View {
+    @State private var dashboardVm: DashboardViewModel = .init()
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 16) {
@@ -32,12 +33,7 @@ struct DasboardView: View {
                     .padding(.horizontal)
                 
                 // MARK: ACTIONS RAPIDES — VERSION GRID
-                VStack(alignment: .leading, spacing: 12) {
-                    Text("Actions Rapide")
-                        .font(.title2)
-                        .fontWeight(.semibold)
-                        .padding(.horizontal)
-                    
+                DashboardSectionView(title: "Actions Rapide") {
                     Grid(alignment: .center, horizontalSpacing: 15, verticalSpacing: 15) {
                         GridRow {
                             QuickActionButton(sfSymbol: "fork.knife",
@@ -63,8 +59,23 @@ struct DasboardView: View {
                                               action: {})
                         }
                     }
-                    .frame(maxWidth: .infinity)
                 }
+                .padding(.horizontal)
+                DashboardSectionView(title: "Aujourd'hui") {
+                    TuileCardView {
+                        CustomProgressView(title: "Calories", progress: 1247, maxProgress: 2000, subtitle: "\(2000 - 1247) calories restantes")
+                    }
+                    HydratationView(litre: 1.25)
+                }
+                if dashboardVm.lastMeal.isEmpty == false {
+                    DashboardSectionView(title: "Repas récent") {
+                    } content: {
+                        ForEach(dashboardVm.lastMeal) { meal in
+                            LastMealTuileView(meal: meal)
+                        }
+                    }
+                }
+
                 Spacer()
             }
         }

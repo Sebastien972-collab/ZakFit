@@ -16,7 +16,7 @@ struct QuickActionButton: View {
         Button {
             action()
         } label: {
-            InformationCardView {
+            TuileCardView {
                 VStack {
                     ImageAndCircleView(sfSymbol: sfSymbol, color: color)
                     Text(title)

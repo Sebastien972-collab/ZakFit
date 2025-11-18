@@ -16,15 +16,15 @@ struct MainTabView: View {
                     .tag(TabViewModel.Selection.home)
             }
             Tab("Nutrition", systemImage: "fork.knife") {
-                Text("Nutrition")
+                NutritionView()
                     .tag(TabViewModel.Selection.nutrition)
             }
             Tab("Fitness", systemImage: "figure.run") {
-                Text("Fitness")
+                FitnessView()
                     .tag(TabViewModel.Selection.fitness)
             }
             Tab("Profil", systemImage: "person.crop.circle") {
-                Text("Profil")
+                ProfilView()
                     .tag(TabViewModel.Selection.home)
             }
         }

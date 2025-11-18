@@ -13,7 +13,7 @@ struct NutritionView: View {
             ScrollView {
                 VStack {
                     ZStack {
-                        Color.customGreen
+                        Color.customPurple
                             .frame(height: 200)
                             .frame(maxWidth: .infinity)
                             .ignoresSafeArea(.all)

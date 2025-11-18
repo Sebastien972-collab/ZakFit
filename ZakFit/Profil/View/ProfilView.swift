@@ -48,6 +48,16 @@ struct ProfilView: View {
                     }
                     
                 }
+                .toolbar {
+                    ToolbarItem(placement: .topBarTrailing) {
+                        NavigationLink {
+                            SettingsView()
+                        } label: {
+                            Image(systemName: "gearshape.fill")
+                        }
+
+                    }
+                }
             }
         }
     }

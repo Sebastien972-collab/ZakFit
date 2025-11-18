@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct DashboardInfoCardView: View {
+struct InfoCardView: View {
     var body: some View {
         InformationCardView {
             HStack() {
@@ -23,5 +23,5 @@ struct DashboardInfoCardView: View {
 }
 
 #Preview {
-    DashboardInfoCardView()
+    InfoCardView()
 }

@@ -9,17 +9,25 @@ import SwiftUI
 
 struct InformationCardView<Content: View>: View {
     private let content: Content
-    
-    init(@ViewBuilder content: () -> Content) {
+    private var title: String?
+    init(title: String? = nil, @ViewBuilder content: () -> Content) {
+        self.title = title
         self.content = content()
     }
     
     var body: some View {
-        HStack(alignment: .center, spacing: 0) {
-            content
+        VStack(alignment: .leading, spacing: 16) {
+            if let title = title {
+                Text(title)
+                    .font(.title3)
+                    .fontWeight(.semibold)
+            }
+            HStack(alignment: .center, spacing: 0) {
+                content
+            }
         }
         .padding(16)
-        .frame(maxWidth: .infinity, maxHeight: 136)
+        .frame(maxWidth: .infinity, maxHeight: 320)
         .background(Color.white)
         .clipShape(RoundedRectangle(cornerRadius: 16))
         .shadow(color: .black.opacity(0.1), radius: 7.5, x: 0, y: 10)
@@ -39,5 +47,11 @@ struct InformationCardView<Content: View>: View {
             Text("Entraînement : Musculation – 45 min")
         }
     }
+    .padding()
+    InformationCardView(title: "Résumé de la journée", content: {
+        Text("Hydratation : 1,5 L")
+        Text("Calories : 1820 kcal")
+        Text("Entraînement : Musculation – 45 min")
+    })
     .padding()
 }

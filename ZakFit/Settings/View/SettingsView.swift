@@ -1,22 +1,19 @@
 //
-//  SettingsView.swift
+//  SettingsView 2.swift
 //  ZakFit
 //
-//  Created by Sébastien DAGUIN on 18/11/2025.
+//  Created by Sébastien Daguin on 18/11/2025.
 //
 
-
 import SwiftUI
-import HealthKit
 
 struct SettingsView: View {
-    @State private var showGoalSelection = false
-    @State private var showHealthKitSheet = false
-    @State private var notificationsEnabled = true
-    @State private var darkMode = false
-    @State private var healthAuthorized = false
+    
+    @State private var viewModel = SettingsViewModel()
     
     var body: some View {
+        @Bindable var viewModel = viewModel   // <- indispensable
+        
         NavigationStack {
             Form {
                 // MARK: - Profil
@@ -24,18 +21,27 @@ struct SettingsView: View {
                     NavigationLink("Informations personnelles") {
                         UserBasicInfoFormView()
                     }
-                    
                     NavigationLink("Objectif") {
                         GoalSelectionView()
                     }
                 }
                 
-                // MARK: - Santé / HealthKit
+                // MARK: - Santé
                 Section("Santé") {
-                    Toggle("Synchroniser avec Apple Santé", isOn: $healthAuthorized)
-                        .onChange(of: healthAuthorized) { _, _ in
-                            requestHealthKitPermission()
-                        }
+                    HStack {
+                        Text("Apple Santé")
+                        Spacer()
+                        Text(viewModel.healthAuthorized ? "Activé" : "Désactivé")
+                            .foregroundStyle(viewModel.healthAuthorized ? .green : .secondary)
+                    }
+                    
+                    Button {
+                        viewModel.requestHealthAuthorization()
+                    } label: {
+                        Text(viewModel.healthAuthorized
+                             ? "Mettre à jour les permissions"
+                             : "Activer l’accès Santé")
+                    }
                     
                     NavigationLink("Sources et permissions") {
                         HealthPermissionsDetailView()
@@ -44,9 +50,9 @@ struct SettingsView: View {
                 
                 // MARK: - Notifications
                 Section("Notifications") {
-                    Toggle("Activer les notifications", isOn: $notificationsEnabled)
+                    Toggle("Activer les notifications", isOn: $viewModel.notificationsEnabled)
                     
-                    if notificationsEnabled {
+                    if viewModel.notificationsEnabled {
                         NavigationLink("Préférences") {
                             NotificationsSettingsView()
                         }
@@ -55,7 +61,7 @@ struct SettingsView: View {
                 
                 // MARK: - Apparence
                 Section("Apparence") {
-                    Toggle("Mode sombre", isOn: $darkMode)
+                    Toggle("Mode sombre", isOn: $viewModel.darkMode)
                 }
                 
                 // MARK: - Confidentialité
@@ -63,11 +69,9 @@ struct SettingsView: View {
                     NavigationLink("Données et sécurité") {
                         PrivacySettingsView()
                     }
-                    
                     NavigationLink("Exporter mes données") {
                         ExportDataView()
                     }
-                    
                     NavigationLink("Supprimer mon compte") {
                         DeleteAccountView()
                     }
@@ -96,26 +100,6 @@ struct SettingsView: View {
                 }
             }
             .navigationTitle("Réglages")
-        }
-    }
-}
-
-// MARK: - HealthKit
-extension SettingsView {
-    private func requestHealthKitPermission() {
-        let healthStore = HKHealthStore()
-        
-        let readTypes: Set<HKObjectType> = [
-            .quantityType(forIdentifier: .activeEnergyBurned)!,
-            .quantityType(forIdentifier: .stepCount)!,
-            .quantityType(forIdentifier: .heartRate)!,
-            .quantityType(forIdentifier: .dietaryEnergyConsumed)!
-        ]
-        
-        healthStore.requestAuthorization(toShare: [], read: readTypes) { success, _ in
-            DispatchQueue.main.async {
-                healthAuthorized = success
-            }
         }
     }
 }

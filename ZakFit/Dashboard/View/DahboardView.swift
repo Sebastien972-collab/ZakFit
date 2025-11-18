@@ -9,6 +9,7 @@ import SwiftUI
 
 struct DasboardView: View {
     @State private var dashboardVm: DashboardViewModel = .init()
+    @State private var showAddMealView: Bool = false
     var body: some View {
         NavigationStack {
             ScrollView {
@@ -40,7 +41,15 @@ struct DasboardView: View {
                                 QuickActionButton(sfSymbol: "fork.knife",
                                                   title: "Ajouter un repas",
                                                   color: .green,
-                                                  action: {})
+                                                  action: {
+                                    showAddMealView.toggle()
+                                })
+                                .sheet(isPresented: $showAddMealView) {
+                                    AddMealView()
+                                    .presentationDetents([.medium, .large])
+                                    .presentationDragIndicator(.hidden)
+                                }
+                                
                                 
                                 QuickActionButton(sfSymbol: "figure.run",
                                                   title: "Entraînement",

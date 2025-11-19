@@ -5,13 +5,6 @@
 //  Created by Sébastien Daguin on 18/11/2025.
 //
 
-//
-//  HealthKitManager.swift
-//  ZakFit
-//
-//  Created by Sébastien DAGUIN on 2025-11-18.
-//
-
 import Foundation
 import HealthKit
 

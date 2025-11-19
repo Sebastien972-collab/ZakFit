@@ -8,99 +8,262 @@
 import SwiftUI
 
 struct SettingsView: View {
-    
     @State private var viewModel = SettingsViewModel()
     
     var body: some View {
-        @Bindable var viewModel = viewModel   // <- indispensable
-        
+        @Bindable var viewModel = viewModel
         NavigationStack {
-            Form {
-                // MARK: - Profil
-                Section("Profil") {
-                    NavigationLink("Informations personnelles") {
-                        UserBasicInfoFormView()
+            ScrollView {
+                VStack(spacing: 32) {
+                    // MARK: - Santé & Données
+                    settingsSection(title: "Santé & Données") {
+                        NavigationLink {
+                            HealthPermissionsDetailView()
+                        } label: {
+                            settingRow(icon: "heart.fill",
+                                       iconColor: .pink,
+                                       title: "HealthKit",
+                                       subtitle: "Synchronisation avec Santé",
+                                       trailing: AnyView(
+                                        Text(viewModel.healthAuthorized ? "Activé" : "Inactif")
+                                            .foregroundStyle(viewModel.healthAuthorized ? .green : .secondary)
+                                    )                            )
+                        }
+                        
+                        VStack(alignment: .leading, spacing: 16) {
+                            Text("Autorisations de données")
+                                .font(.headline)
+                                .foregroundStyle(.secondary)
+                            permissionToggle("Pas & Distance", icon: "figure.walk", binding: $viewModel.stepsEnabled)
+                            permissionToggle("Énergie active", icon: "bolt.fill", binding: $viewModel.energyEnabled)
+                            permissionToggle("Minutes d'exercice", icon: "clock.fill", binding: $viewModel.exerciseEnabled)
+                            permissionToggle("Fréquence cardiaque", icon: "heart.circle.fill", binding: $viewModel.heartRateEnabled)
+                            permissionToggle("Sommeil", icon: "bed.double.fill", binding: $viewModel.sleepEnabled)
+                            permissionToggle("Poids & IMC", icon: "scalemass.fill", binding: $viewModel.weightEnabled)
+                        }
+                        .padding(.top, 8)
                     }
-                    NavigationLink("Objectif") {
-                        GoalSelectionView()
-                    }
-                }
-                
-                // MARK: - Santé
-                Section("Santé") {
-                    HStack {
-                        Text("Apple Santé")
-                        Spacer()
-                        Text(viewModel.healthAuthorized ? "Activé" : "Désactivé")
-                            .foregroundStyle(viewModel.healthAuthorized ? .green : .secondary)
-                    }
-                    
-                    Button {
-                        viewModel.requestHealthAuthorization()
-                    } label: {
-                        Text(viewModel.healthAuthorized
-                             ? "Mettre à jour les permissions"
-                             : "Activer l’accès Santé")
-                    }
-                    
-                    NavigationLink("Sources et permissions") {
-                        HealthPermissionsDetailView()
-                    }
-                }
-                
-                // MARK: - Notifications
-                Section("Notifications") {
-                    Toggle("Activer les notifications", isOn: $viewModel.notificationsEnabled)
-                    
-                    if viewModel.notificationsEnabled {
-                        NavigationLink("Préférences") {
-                            NotificationsSettingsView()
+                    // MARK: - Notifications
+                    settingsSection(title: "Notifications") {
+                        toggleRow("Notifications push", icon: "bell.badge.fill", binding: $viewModel.notificationsEnabled)
+                        if viewModel.notificationsEnabled {
+                            NavigationLink {
+                                NotificationsSettingsView()
+                            } label: {
+                                settingRow(icon: "slider.horizontal.3",
+                                           iconColor: .purple,
+                                           title: "Préférences",
+                                           subtitle: "Rappels & coaching")
+                            }
                         }
                     }
-                }
-                
-                // MARK: - Apparence
-                Section("Apparence") {
-                    Toggle("Mode sombre", isOn: $viewModel.darkMode)
-                }
-                
-                // MARK: - Confidentialité
-                Section("Confidentialité") {
-                    NavigationLink("Données et sécurité") {
-                        PrivacySettingsView()
-                    }
-                    NavigationLink("Exporter mes données") {
-                        ExportDataView()
-                    }
-                    NavigationLink("Supprimer mon compte") {
-                        DeleteAccountView()
-                    }
-                }
-                
-                // MARK: - À propos
-                Section("À propos") {
-                    NavigationLink("Conditions d’utilisation") {
-                        TermsOfUseView()
+                    
+                    // MARK: - Profil & Compte
+                    settingsSection(title: "Profil & Compte") {
+                        NavigationLink {
+                            UserBasicInfoFormView()
+                        } label: {
+                            HStack(spacing: 16) {
+                                Circle()
+                                    .fill(Color.gray.opacity(0.3))
+                                    .frame(width: 52, height: 52)
+                                    .overlay(
+                                        Image(systemName: "person.fill")
+                                            .font(.title2)
+                                            .foregroundStyle(.gray)
+                                    )
+                                
+                                VStack(alignment: .leading) {
+                                    Text("Ahmed Benali")
+                                        .font(.headline)
+                                    Text("ahmed.benali@gmail.com")
+                                        .font(.subheadline)
+                                        .foregroundStyle(.secondary)
+                                    Text("81 kg • 180 cm")
+                                        .font(.subheadline)
+                                        .foregroundStyle(.secondary)
+                                }
+                                Spacer()
+                                Image(systemName: "chevron.right")
+                                    .foregroundStyle(.secondary)
+                            }
+                            .padding(.vertical, 4)
+                        }
+                        Button {
+                            viewModel.logout()
+                        } label: {
+                            Text("Se déconnecter")
+                                .font(.headline)
+                                .foregroundColor(.white)
+                                .frame(maxWidth: .infinity)
+                                .padding()
+                                .background(Color.red.opacity(0.9))
+                                .clipShape(RoundedRectangle(cornerRadius: 12))
+                        }
+                        .padding(.top, 12)
                     }
                     
-                    NavigationLink("Politique de confidentialité") {
-                        PrivacyPolicyView()
+                    // MARK: - Paramètres généraux
+                    settingsSection(title: "Paramètres généraux") {
+                        NavigationLink {
+                            AppearanceSettingsView()
+                        } label: {
+                            settingRow(icon: "wand.and.stars",
+                                       iconColor: .orange,
+                                       title: "Apparence")
+                        }
+                        
+                        toggleRow("Animations visuelles", icon: "sparkles", binding: $viewModel.animationsEnabled)
                     }
                     
-                    NavigationLink("Support") {
-                        SupportView()
+                    // MARK: - Confidentialité
+                    settingsSection(title: "Confidentialité & Sécurité") {
+                        
+                        HStack {
+                            Image(systemName: "checkmark.shield.fill")
+                                .foregroundStyle(.green)
+                            Text("ZakFit respecte votre confidentialité.")
+                                .font(.subheadline)
+                        }
+                        .padding(.bottom, 8)
+                        
+                        NavigationLink("Politique de confidentialité") {
+                            PrivacyPolicyView()
+                        }
+                        NavigationLink("Conditions d’utilisation") {
+                            TermsOfUseView()
+                        }
+                        
+                        Button(role: .destructive) {
+                            viewModel.deleteAccount()
+                        } label: {
+                            Text("Supprimer mon compte")
+                                .frame(maxWidth: .infinity)
+                                .padding()
+                                .background(Color.red.opacity(0.1))
+                                .foregroundStyle(.red)
+                                .clipShape(RoundedRectangle(cornerRadius: 12))
+                        }
+                        .padding(.top, 8)
                     }
                     
-                    HStack {
-                        Text("Version de l’application")
-                        Spacer()
-                        Text("1.0.0")
+                    // MARK: - Footer
+                    VStack(spacing: 8) {
+                        Image(systemName: "heart.fill")
+                            .font(.largeTitle)
+                            .foregroundColor(.blue)
+                            .padding(8)
+                            .background(Color.blue.opacity(0.15))
+                            .clipShape(RoundedRectangle(cornerRadius: 16))
+                        
+                        Text("ZakFit")
+                            .font(.title3.bold())
+                        
+                        Text("Version 1.1.0")
                             .foregroundStyle(.secondary)
+                            .font(.subheadline)
+                        
+                        Text("Développé avec ❤️ pour votre bien-être.")
+                            .font(.footnote)
+                            .foregroundStyle(.secondary)
+                            .padding(.top, 4)
                     }
+                    .padding(.top, 16)
+                    .padding(.bottom, 60)
                 }
+                .padding()
             }
             .navigationTitle("Réglages")
+            .onAppear {
+                Task {
+                    await viewModel.updateHealthStatus()
+                    print(viewModel.stepsEnabled,
+                          viewModel.energyEnabled,
+                          viewModel.sleepEnabled)
+                }
+            }
         }
+    }
+    // MARK: - UI HELPERS
+
+    /// Section avec un fond arrondi comme dans le mockup
+    @ViewBuilder
+    func settingsSection<Content: View>(title: String, @ViewBuilder content: () -> Content) -> some View {
+        VStack(alignment: .leading, spacing: 16) {
+            Text(title)
+                .font(.title3.bold())
+                .padding(.horizontal, 4)
+            
+            VStack(spacing: 0) {
+                content()
+            }
+            .padding()
+            .background(Color(.secondarySystemBackground))
+            .clipShape(RoundedRectangle(cornerRadius: 16))
+        }
+    }
+
+    /// Ligne de réglage standard avec icône + titre + sous-titre + trailing optionnel
+    func settingRow(
+        icon: String,
+        iconColor: Color = .blue,
+        title: String,
+        subtitle: String? = nil,
+        trailing: AnyView? = nil
+    ) -> some View {
+        
+        HStack(spacing: 16) {
+            Image(systemName: icon)
+                .font(.title3)
+                .foregroundColor(iconColor)
+                .frame(width: 30)
+            
+            VStack(alignment: .leading, spacing: 2) {
+                Text(title)
+                    .font(.body)
+                if let subtitle = subtitle {
+                    Text(subtitle)
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                }
+            }
+            
+            Spacer()
+            
+            if let trailing = trailing {
+                trailing
+            } else {
+                Image(systemName: "chevron.right")
+                    .foregroundStyle(.secondary)
+            }
+        }
+        .padding(.vertical, 10)
+    }
+
+    /// Toggle avec icône comme dans la maquette
+    func toggleRow(_ title: String, icon: String, binding: Binding<Bool>) -> some View {
+        HStack(spacing: 16) {
+            Image(systemName: icon)
+                .font(.title3)
+                .foregroundColor(.blue)
+                .frame(width: 30)
+            
+            Toggle(title, isOn: binding)
+        }
+        .padding(.vertical, 8)
+    }
+
+    /// Ligne de permission HealthKit
+    func permissionToggle(_ title: String, icon: String, binding: Binding<Bool>) -> some View {
+        HStack(spacing: 16) {
+            Image(systemName: icon)
+                .font(.title3)
+                .foregroundColor(.pink)
+                .frame(width: 30)
+            
+            Toggle(title, isOn: binding)
+        }
+        .padding(.vertical, 6)
     }
 }
 

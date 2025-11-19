@@ -51,6 +51,9 @@ final class SettingsViewModel {
             do {
                 try await HealthKitManager.shared.requestAuthorization()
                 await updateHealthStatus()
+                await MainActor.run {
+                    self.updateDetailedPermissions()
+                }
             } catch {
                 print("Erreur HealthKit :", error)
             }

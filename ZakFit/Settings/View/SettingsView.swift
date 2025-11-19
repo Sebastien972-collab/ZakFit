@@ -16,24 +16,43 @@ struct SettingsView: View {
             ScrollView {
                 VStack(spacing: 32) {
                     // MARK: - Santé & Données
+                    // MARK: - Santé & Données
                     settingsSection(title: "Santé & Données") {
+                        // Lien vers le détail HealthKit
                         NavigationLink {
                             HealthPermissionsDetailView()
                         } label: {
-                            settingRow(icon: "heart.fill",
-                                       iconColor: .pink,
-                                       title: "HealthKit",
-                                       subtitle: "Synchronisation avec Santé",
-                                       trailing: AnyView(
-                                        Text(viewModel.healthAuthorized ? "Activé" : "Inactif")
-                                            .foregroundStyle(viewModel.healthAuthorized ? .green : .secondary)
-                                    )                            )
+                            settingRow(
+                                icon: "heart.fill",
+                                iconColor: .pink,
+                                title: "HealthKit",
+                                subtitle: "Synchronisation avec Santé",
+                                trailing: AnyView(
+                                    Text(viewModel.healthAuthorized ? "Activé" : "Inactif")
+                                        .foregroundStyle(viewModel.healthAuthorized ? .green : .secondary)
+                                )
+                            )
                         }
                         
+                        Button {
+                            viewModel.requestHealthAuthorization()
+                        } label: {
+                            Text(viewModel.healthAuthorized ? "Mettre à jour les permissions" : "Activer l’accès Santé")
+                                .font(.headline)
+                                .foregroundColor(.white)
+                                .frame(maxWidth: .infinity)
+                                .padding()
+                                .background(Color.blue)
+                                .clipShape(RoundedRectangle(cornerRadius: 12))
+                                .padding(.top, 6)
+                        }
+                        
+                        // Autres permissions détaillées
                         VStack(alignment: .leading, spacing: 16) {
                             Text("Autorisations de données")
                                 .font(.headline)
                                 .foregroundStyle(.secondary)
+                            
                             permissionToggle("Pas & Distance", icon: "figure.walk", binding: $viewModel.stepsEnabled)
                             permissionToggle("Énergie active", icon: "bolt.fill", binding: $viewModel.energyEnabled)
                             permissionToggle("Minutes d'exercice", icon: "clock.fill", binding: $viewModel.exerciseEnabled)
@@ -174,13 +193,8 @@ struct SettingsView: View {
                 .padding()
             }
             .navigationTitle("Réglages")
-            .onAppear {
-                Task {
-                    await viewModel.updateHealthStatus()
-                    print(viewModel.stepsEnabled,
-                          viewModel.energyEnabled,
-                          viewModel.sleepEnabled)
-                }
+            .task {
+                await viewModel.updateHealthStatus()
             }
         }
     }

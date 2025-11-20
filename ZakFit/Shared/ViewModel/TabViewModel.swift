@@ -22,19 +22,13 @@ class TabViewModel {
     var showError: Bool = false
     
     init() {
-        let hasSeenOnboarding = UserDefaults.standard.bool(forKey: "hasSeenOnboarding")
-        if !hasSeenOnboarding {
-            self.authState = .firstLaunch
-        } else {
-            self.authState = .loading
-            Task { await checkSession() }
-        }
+        Task { await checkSession() }
     }
     
     func checkSession() async {
         // Vérifie si un token est valide et essaie de fetch le profil
         do {
-            //try await manager.fetchProfile()
+            try await manager.fetchProfile()
             authState = .authenticated
             
         } catch {
@@ -72,7 +66,6 @@ class TabViewModel {
 
 enum AuthState {
     case firstLaunch
-    case questionPhase
     case authenticated
     case notAuthenticated
     case loading

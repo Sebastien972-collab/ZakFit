@@ -2,79 +2,75 @@
 //  User.swift
 //  ZakFit
 //
-//  Created by Assistant on 18/11/2025.
+//  Created by Sébastien DAGUIN.
 //
 
 import Foundation
 
-struct User: Identifiable, Codable, Sendable {
-    
+struct User: Identifiable, Codable, Equatable {
+
     // MARK: - Identité
-    let id: UUID?
+    let id: UUID
     var firstName: String
     var lastName: String
     var email: String
-    
-    // MARK: - Informations physiques
-    var height: Double?            // en cm
-    var weight: Double?            // en kg
-    var dateOfBirth: Date?
-    var gender: Gender?
-    
-    // MARK: - Objectifs
-    var dailyCalorieGoal: Int?
-    var weightGoal: Double?
-    var activityGoalMinutes: Int?
-    var activityGoalCalories: Int?
-    var goalType: UserGoal         // Perte de poids / maintien / prise de masse
-    
-    // MARK: - Préférences utilisateur
-    var prefersDarkMode: Bool
-    var notificationsEnabled: Bool
-    var healthKitEnabled: Bool
-    
+
+    // MARK: - Mesures physiques
+    var heightCm: Double
+    var initialWeightKg: Double
+    var currentWeightKg: Double
+
+    // MARK: - Préférences
+    var dietPreference: String
+    var activityLevel: String
+
     // MARK: - Dates
-    var createdAt: Date?
-    var updatedAt: Date?
+    let createdAt: Date?
+    let updatedAt: Date?
     
-    // MARK: - Initialisation
+    // MARK: - Initializer
     init(
-        id: UUID? = nil,
+        id: UUID = UUID(),
         firstName: String,
         lastName: String,
         email: String,
-        height: Double? = nil,
-        weight: Double? = nil,
-        dateOfBirth: Date? = nil,
-        gender: Gender? = nil,
-        dailyCalorieGoal: Int? = nil,
-        weightGoal: Double? = nil,
-        activityGoalMinutes: Int? = nil,
-        activityGoalCalories: Int? = nil,
-        goalType: UserGoal = .weightLossGradual ,
-        prefersDarkMode: Bool = false,
-        notificationsEnabled: Bool = true,
-        healthKitEnabled: Bool = false,
-        createdAt: Date? = nil,
-        updatedAt: Date? = nil
+        heightCm: Double,
+        initialWeightKg: Double,
+        currentWeightKg: Double,
+        dietPreference: String,
+        activityLevel: String,
+        createdAt: Date = Date(),
+        updatedAt: Date = Date()
     ) {
         self.id = id
         self.firstName = firstName
         self.lastName = lastName
         self.email = email
-        self.height = height
-        self.weight = weight
-        self.dateOfBirth = dateOfBirth
-        self.gender = gender
-        self.dailyCalorieGoal = dailyCalorieGoal
-        self.weightGoal = weightGoal
-        self.activityGoalMinutes = activityGoalMinutes
-        self.activityGoalCalories = activityGoalCalories
-        self.goalType = goalType
-        self.prefersDarkMode = prefersDarkMode
-        self.notificationsEnabled = notificationsEnabled
-        self.healthKitEnabled = healthKitEnabled
+        self.heightCm = heightCm
+        self.initialWeightKg = initialWeightKg
+        self.currentWeightKg = currentWeightKg
+        self.dietPreference = dietPreference
+        self.activityLevel = activityLevel
         self.createdAt = createdAt
         self.updatedAt = updatedAt
     }
+    
+    init(from userPublicData: UserPublicData) {
+        self.id = userPublicData.id ?? UUID()
+        self.firstName = userPublicData.firstName
+        self.lastName = userPublicData.lastName
+        self.email = userPublicData.email
+        
+        //MARK: - Mesures physiques
+        self.heightCm = userPublicData.heightCm
+        self.initialWeightKg = userPublicData.initialWeightKg
+        self.currentWeightKg = userPublicData.currentWeightKg
+        //MARK: - Préférences
+        self.dietPreference = userPublicData.dietPreference ?? "none"
+        self.activityLevel = userPublicData.activityLevel
+        //MARK: - Dates
+        self.createdAt = userPublicData.createdAt
+        self.updatedAt = userPublicData.updatedAt
+    }
+    
 }

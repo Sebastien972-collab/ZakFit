@@ -1,0 +1,15 @@
+{
+  "originHash" : "b4396f0a5362b767ecd13997baab1a57704570e619c7a2099e876df62e4dc2e6",
+  "pins" : [
+    {
+      "identity" : "sjdtoolbox2025",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/Sebastien972-collab/SJDToolbox2025.git",
+      "state" : {
+        "branch" : "main",
+        "revision" : "a25bd1ab27a4509e57a7026fb4b13cc9645088ac"
+      }
+    }
+  ],
+  "version" : 3
+}

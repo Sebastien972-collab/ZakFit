@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		CF45E3302ECB579200CBDDDC /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = CF45E32F2ECB579200CBDDDC /* README.md */; };
+		CF7B9ED72ECF52A3008E811C /* SJDToolbox in Frameworks */ = {isa = PBXBuildFile; productRef = CF7B9ED62ECF52A3008E811C /* SJDToolbox */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -57,6 +58,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CF7B9ED72ECF52A3008E811C /* SJDToolbox in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -109,6 +111,7 @@
 			);
 			name = ZakFit;
 			packageProductDependencies = (
+				CF7B9ED62ECF52A3008E811C /* SJDToolbox */,
 			);
 			productName = ZakFit;
 			productReference = CF45E26C2ECB42FF00CBDDDC /* ZakFit.app */;
@@ -165,6 +168,9 @@
 			);
 			mainGroup = CF45E2632ECB42FF00CBDDDC;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				CF7B9ED52ECF52A3008E811C /* XCRemoteSwiftPackageReference "SJDToolbox2025" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = CF45E26D2ECB42FF00CBDDDC /* Products */;
 			projectDirPath = "";
@@ -496,6 +502,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		CF7B9ED52ECF52A3008E811C /* XCRemoteSwiftPackageReference "SJDToolbox2025" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Sebastien972-collab/SJDToolbox2025.git";
+			requirement = {
+				branch = main;
+				kind = branch;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		CF7B9ED62ECF52A3008E811C /* SJDToolbox */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CF7B9ED52ECF52A3008E811C /* XCRemoteSwiftPackageReference "SJDToolbox2025" */;
+			productName = SJDToolbox;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = CF45E2642ECB42FF00CBDDDC /* Project object */;
 }

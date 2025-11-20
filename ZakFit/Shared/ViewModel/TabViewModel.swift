@@ -9,13 +9,15 @@ import SwiftUI
 
 @Observable
 class TabViewModel {
+    
     enum Selection {
         case home, nutrition, fitness, profile
     }
     
     var selection: Selection = .home
-//    var manager: UserManager = .shared
-//    var currentUser: User { manager.currentUser }
+    var manager: UserManager = .shared
+    var currentUser: User { manager.currentUser }
+    var authManager: AuthenticationService = .shared
     var authState: AuthState = .loading
     var error: Error? = nil
     
@@ -28,7 +30,7 @@ class TabViewModel {
     func checkSession() async {
         // Vérifie si un token est valide et essaie de fetch le profil
         do {
-            try await manager.fetchProfile()
+            try await manager.fetchProfil()
             authState = .authenticated
             
         } catch {

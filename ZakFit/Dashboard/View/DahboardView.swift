@@ -10,6 +10,7 @@ import SwiftUI
 struct DasboardView: View {
     @State private var dashboardVm: DashboardViewModel = .init()
     @State private var showAddMealView: Bool = false
+    private var currentUser: User = UserManager.shared.currentUser
     var body: some View {
         NavigationStack {
             ScrollView {
@@ -23,7 +24,7 @@ struct DasboardView: View {
                         
                         HeaderView(
                             selection: .urlImage(url: URL(string: "https://images.pexels.com/photos/2057435/pexels-photo-2057435.jpeg")!),
-                            title: "Bonjour, Sébastien",
+                            title: "Bonjour, \(currentUser.firstName)",
                             subtitle: "Continuons votre parcours santé"
                         )
                     }
@@ -91,6 +92,13 @@ struct DasboardView: View {
             }
             .background {
                 Color.zackFitBackground.ignoresSafeArea(.all)
+            }
+            .task {
+               do {
+                   try await UserManager.shared.fetchProfil()
+                } catch {
+                    print("Error fetching user: \(error.localizedDescription)")
+               }
             }
         }
     }

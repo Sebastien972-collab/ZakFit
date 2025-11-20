@@ -26,7 +26,7 @@ class AuthenticationViewModel {
     var error: AuthenticationError = .unknown
 
     // MARK: - REGISTER
-    func register() async {
+    func register(callback: (() -> Void)? = nil) async {
         isLoading = true
         do {
             defer { isLoading = false }
@@ -42,6 +42,7 @@ class AuthenticationViewModel {
             )
 
             let response = try await AuthenticationService.shared.register(of: user)
+            callback?()
 
         } catch let authError as AuthenticationError {
             launchError(authError)
@@ -51,7 +52,7 @@ class AuthenticationViewModel {
     }
 
     // MARK: - LOGIN
-    func login() async {
+    func login(callback: (() -> Void)? = nil) async {
         isLoading = true
         do {
             defer { isLoading = false }
@@ -61,6 +62,8 @@ class AuthenticationViewModel {
 
             let loginData = LoginData(email: email, password: password)
             let response = try await AuthenticationService.shared.login(of: loginData)
+            
+            callback?()
 
         } catch let authError as AuthenticationError {
             launchError(authError)

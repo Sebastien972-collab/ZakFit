@@ -9,13 +9,58 @@ import SwiftUI
 
 struct SettingsView: View {
     @State private var viewModel = SettingsViewModel()
-    
+    private var currentUser: User {
+        UserManager.shared.currentUser
+    }
     var body: some View {
         @Bindable var viewModel = viewModel
         NavigationStack {
             ScrollView {
                 VStack(spacing: 32) {
-                    // MARK: - Santé & Données
+                    // MARK: - Profil & Compte
+                    settingsSection(title: "Profil & Compte") {
+                        NavigationLink {
+                            UserBasicInfoFormView()
+                        } label: {
+                            HStack(spacing: 16) {
+                                Circle()
+                                    .fill(Color.gray.opacity(0.3))
+                                    .frame(width: 52, height: 52)
+                                    .overlay(
+                                        Image(systemName: "person.fill")
+                                            .font(.title2)
+                                            .foregroundStyle(.gray)
+                                    )
+                                
+                                VStack(alignment: .leading) {
+                                    Text(currentUser.firstName + " " + currentUser.lastName)
+                                        .font(.headline)
+                                    Text(currentUser.email)
+                                        .font(.subheadline)
+                                        .foregroundStyle(.secondary)
+                                    Text("\(currentUser.currentWeightKg) kg • \(currentUser.heightCm) cm")
+                                        .font(.subheadline)
+                                        .foregroundStyle(.secondary)
+                                }
+                                Spacer()
+                                Image(systemName: "chevron.right")
+                                    .foregroundStyle(.secondary)
+                            }
+                            .padding(.vertical, 4)
+                        }
+                        Button {
+                            viewModel.logout()
+                        } label: {
+                            Text("Se déconnecter")
+                                .font(.headline)
+                                .foregroundColor(.white)
+                                .frame(maxWidth: .infinity)
+                                .padding()
+                                .background(Color.red.opacity(0.9))
+                                .clipShape(RoundedRectangle(cornerRadius: 12))
+                        }
+                        .padding(.top, 12)
+                    }
                     // MARK: - Santé & Données
                     settingsSection(title: "Santé & Données") {
                         // Lien vers le détail HealthKit
@@ -77,50 +122,6 @@ struct SettingsView: View {
                         }
                     }
                     
-                    // MARK: - Profil & Compte
-                    settingsSection(title: "Profil & Compte") {
-                        NavigationLink {
-                            UserBasicInfoFormView()
-                        } label: {
-                            HStack(spacing: 16) {
-                                Circle()
-                                    .fill(Color.gray.opacity(0.3))
-                                    .frame(width: 52, height: 52)
-                                    .overlay(
-                                        Image(systemName: "person.fill")
-                                            .font(.title2)
-                                            .foregroundStyle(.gray)
-                                    )
-                                
-                                VStack(alignment: .leading) {
-                                    Text("Ahmed Benali")
-                                        .font(.headline)
-                                    Text("ahmed.benali@gmail.com")
-                                        .font(.subheadline)
-                                        .foregroundStyle(.secondary)
-                                    Text("81 kg • 180 cm")
-                                        .font(.subheadline)
-                                        .foregroundStyle(.secondary)
-                                }
-                                Spacer()
-                                Image(systemName: "chevron.right")
-                                    .foregroundStyle(.secondary)
-                            }
-                            .padding(.vertical, 4)
-                        }
-                        Button {
-                            viewModel.logout()
-                        } label: {
-                            Text("Se déconnecter")
-                                .font(.headline)
-                                .foregroundColor(.white)
-                                .frame(maxWidth: .infinity)
-                                .padding()
-                                .background(Color.red.opacity(0.9))
-                                .clipShape(RoundedRectangle(cornerRadius: 12))
-                        }
-                        .padding(.top, 12)
-                    }
                     
                     // MARK: - Paramètres généraux
                     settingsSection(title: "Paramètres généraux") {

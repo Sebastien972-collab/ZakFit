@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct AuthenticationView: View {
-
+    @Environment(TabViewModel.self) private var tabVm: TabViewModel
     @State var authVm = AuthenticationViewModel()
 
     var body: some View {
@@ -64,9 +64,13 @@ struct AuthenticationView: View {
                     Button {
                         Task {
                             if authVm.selection == .login {
-                                await authVm.login()
+                                await authVm.login {
+                                    tabVm.authState = .authenticated
+                                }
                             } else {
-                                await authVm.register()
+                                await authVm.register {
+                                    tabVm.authState = .authenticated
+                                }
                             }
                         }
                     } label: {
@@ -78,12 +82,13 @@ struct AuthenticationView: View {
 
                             Text(authVm.selection == .login ? "Connexion" : "Créer mon compte")
                                 .fontWeight(.semibold)
+                            
                         }
                         .frame(maxWidth: .infinity)
                         .padding()
                         .background(Color.blue)
                         .foregroundStyle(.white)
-                        .cornerRadius(12)
+                        .clipShape(RoundedRectangle(cornerRadius: 12))
                     }
                     .disabled(authVm.isLoading)
                     .padding(.top, 12)

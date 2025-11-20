@@ -8,6 +8,9 @@
 import SwiftUI
 
 struct ProfilView: View {
+    private var currentUser: User {
+        UserManager.shared.currentUser
+    }
     var body: some View {
         NavigationStack {
             VStack {
@@ -20,7 +23,7 @@ struct ProfilView: View {
                                 .ignoresSafeArea(.all)
                             HeaderView(
                                 selection: .urlImage(url: URL(string: "https://images.pexels.com/photos/2057435/pexels-photo-2057435.jpeg")!),
-                                title: "Bonjour, Sébastien",
+                                title: "Bonjour, \(currentUser.firstName)",
                                 subtitle: "Assistant Profil ZakFit"
                             )
                         }

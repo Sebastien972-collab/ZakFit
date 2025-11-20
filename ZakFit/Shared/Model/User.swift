@@ -74,3 +74,7 @@ struct User: Identifiable, Codable, Equatable {
     }
     
 }
+
+extension User {
+    static let guest: User = .init(firstName: "Invité", lastName: "Guest", email: "guest@guest.com", heightCm: 0, initialWeightKg: 0, currentWeightKg: 0, dietPreference: "none", activityLevel: "Normal")
+}

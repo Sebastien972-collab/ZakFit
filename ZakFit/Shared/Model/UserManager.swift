@@ -10,12 +10,16 @@ import Foundation
 final class UserManager {
     static let shared = UserManager()
     private init() {}
-    private(set) var currentUser: User?
+    private(set) var currentUser: User = .guest
     private let service: UserService = .shared
     
     
-    
     func fetchProfil() async throws {
-        self.currentUser = service.fetchProfile()
+        let userFetched = User(from: try await service.fetchProfile())
+        self.currentUser = userFetched
+    }
+    
+    func uppdateProfil(with user: User) async throws {
+        
     }
 }

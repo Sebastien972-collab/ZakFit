@@ -45,7 +45,7 @@ class ZakFitNetworkingService {
     /// - Returns: A decoded instance of `T` on success, or `EmptyResponse` when the server returns no content (204) and `T == EmptyResponse`.
     /// - Throws: `URLError` for bad URLs or transport errors, or decoding errors if the response body cannot be decoded to `T`.
     func request<T: Decodable>(_ apiRequest: APIRequest, responseType: T.Type, token: String? = nil) async throws -> T {
-        let ngrokURL = "https://clare-bacteriologic-grimily.ngrok-free.dev/\(apiRequest.endpoint)"
+        let ngrokURL = "https://lusterless-nondisingenuously-selina.ngrok-free.dev/\(apiRequest.endpoint)"
         guard let url = URL(string: ngrokURL) else { throw URLError.init(.badURL) }
 
         print("📡 URL:", url.absoluteString)

@@ -58,4 +58,5 @@ struct MainTabView: View {
 #Preview {
     MainTabView()
         .environment(TabViewModel())
+        .environment(AddMealViewModel())
 }

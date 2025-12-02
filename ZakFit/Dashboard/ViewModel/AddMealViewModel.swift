@@ -13,28 +13,34 @@ final class AddMealViewModel {
     var mealName: String = ""
     var date: Date = Date()
     var type: TypeOfMeal = .lunch
-    var foods: [ConsumedFood] = []
+    var foods: [FoodItem] = []
     // Champs temporaires pour ajouter un aliment
     var tempName: String = ""
     var tempCalories: Int?
+    var totalCalories: Double { foods.reduce(0) { $0 + $1.caloriesPer100g } }
+    
     
     var savedFoods: [ConsumedFood] = []
     
-    func addFood() {
-        guard !tempName.isEmpty,
-              let kcals = tempCalories else { return }
-        
-        let food = ConsumedFood(id: .init(), name: tempName, quantityInGrams: 0, calories: 0, protein: 0, carbs: 0, fat: 0)
-        
+    func addFood(food: FoodItem) {
         foods.append(food)
-        tempName = ""
-        tempCalories = nil
+    }
+    @Sendable
+    func saveMeal() async {
+        var meal = Meal(id: .init(), name: mealName, type: .breakfast, foods: foods)
+        meal.foods =  foods
+        do {
+            let meal = try await MealService.shared.createMeal(meal: meal)
+            
+        } catch  {
+            print(error.localizedDescription)
+        }
     }
     
-    func saveMeal() {
-        guard mealName.isEmpty == false else {
-            return
-        }
-        Meal(id: .init(), name: mealName, type: .breakfast, foods: foods)
+    func containsFood(named: String) -> Bool {
+        foods.contains(where: { $0.name == named })
+    }
+    func remove(food: FoodItem) {
+        foods.remove(at: foods.firstIndex(where: { $0.id == food.id })!)
     }
 }

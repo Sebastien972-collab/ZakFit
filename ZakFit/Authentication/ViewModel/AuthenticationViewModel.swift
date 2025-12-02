@@ -32,8 +32,6 @@ class AuthenticationViewModel {
             defer { isLoading = false }
             try validateRegisterForm()
 
-            
-
             let user = RegisterData(
                 firstName: firstName,
                 lastName: lastName,
@@ -57,8 +55,6 @@ class AuthenticationViewModel {
         do {
             defer { isLoading = false }
             try validateLoginForm()
-
-           
 
             let loginData = LoginData(email: email, password: password)
             let response = try await AuthenticationService.shared.login(of: loginData)

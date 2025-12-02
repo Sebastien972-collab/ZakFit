@@ -38,7 +38,7 @@ struct SettingsView: View {
                                     Text(currentUser.email)
                                         .font(.subheadline)
                                         .foregroundStyle(.secondary)
-                                    Text("\(currentUser.currentWeightKg) kg • \(currentUser.heightCm) cm")
+                                    Text("\(currentUser.currentWeightKg.roundedFormatted()) kg • \(currentUser.heightCm.roundedFormatted()) cm")
                                         .font(.subheadline)
                                         .foregroundStyle(.secondary)
                                 }
@@ -285,3 +285,4 @@ struct SettingsView: View {
 #Preview {
     SettingsView()
 }
+

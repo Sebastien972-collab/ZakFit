@@ -16,7 +16,7 @@ final class AuthenticationService {
     
     func register(of user: RegisterData) async throws -> UserPublicData {
         let data = try JSONEncoder().encode(user)
-        let request = APIRequest(endpoint: "/auth/register", httpMethod: .POST)
+        let request = APIRequest(endpoint: "/auth/register", httpMethod: .POST, body: data)
         let networkResponse = try await networkService.request(request, responseType: TokenResponse.self)
         
         try keychainManager.saveToken(networkResponse.token)

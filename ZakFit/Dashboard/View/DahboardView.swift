@@ -6,12 +6,14 @@
 //
 
 import SwiftUI
+import SJDToolbox
 
 struct DasboardView: View {
     @State private var dashboardVm: DashboardViewModel = .init()
     @State private var showAddMealView: Bool = false
     private var currentUser: User = UserManager.shared.currentUser
     var body: some View {
+        @Bindable var dashboardVm = dashboardVm 
         NavigationStack {
             ScrollView {
                 VStack(alignment: .leading, spacing: 16) {
@@ -47,8 +49,8 @@ struct DasboardView: View {
                                 })
                                 .sheet(isPresented: $showAddMealView) {
                                     AddMealView()
-                                    .presentationDetents([.medium, .large])
-                                    .presentationDragIndicator(.hidden)
+                                        .presentationDetents([.medium, .large])
+                                        .presentationDragIndicator(.hidden)
                                 }
                                 
                                 
@@ -78,15 +80,12 @@ struct DasboardView: View {
                         }
                         HydratationView(litre: 1.25)
                     }
-                    if dashboardVm.lastMeal.isEmpty == false {
-                        DashboardSectionView(title: "Repas récent") {
-                        } content: {
-                            ForEach(dashboardVm.lastMeal) { meal in
-                                LastMealTuileView(meal: meal)
-                            }
+                    DashboardSectionView(title: "Repas récent") {
+                    } content: {
+                        ForEach(dashboardVm.lastMeal.suffix(3)) { meal in
+                            LastMealTuileView(meal: meal)
                         }
                     }
-                    
                     Spacer()
                 }
             }
@@ -94,11 +93,12 @@ struct DasboardView: View {
                 Color.zackFitBackground.ignoresSafeArea(.all)
             }
             .task {
-               do {
-                   try await UserManager.shared.fetchProfil()
+                do {
+                    try await UserManager.shared.fetchProfil()
+                    await dashboardVm.fetchLastMeal()
                 } catch {
                     print("Error fetching user: \(error.localizedDescription)")
-               }
+                }
             }
         }
     }

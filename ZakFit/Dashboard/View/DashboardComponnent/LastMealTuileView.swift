@@ -8,14 +8,14 @@
 import SwiftUI
 
 struct LastMealTuileView: View {
-    let meal: Meal
+    let meal: MealResponse
     var body: some View {
         TuileCardView {
             HStack {
-                ImageAndCircleView(sfSymbol: "sun.max.fill", color: Color(meal.type.coulorName))
+                ImageAndCircleView(sfSymbol: "sun.max.fill", color: Color(TypeOfMeal(rawValue: meal.type)?.coulorName ?? TypeOfMeal.breakfast.coulorName))
                 VStack(alignment: .leading) {
                     HStack {
-                        Text(meal.type.rawValue)
+                        Text(meal.type)
                             .font(.title3)
                             .bold()
                         Spacer()
@@ -24,7 +24,7 @@ struct LastMealTuileView: View {
                             .fontWeight(.semibold)
                     }
                     HStack {
-                        Text(meal.name)
+                        Text(meal.type + " du " + meal.date.formatted())
                             .foregroundStyle(.secondary)
                             .fontWeight(.semibold)
                         Spacer()
@@ -38,6 +38,6 @@ struct LastMealTuileView: View {
     }
 }
 
-#Preview {
-    LastMealTuileView(meal: .carbonara)
-}
+//#Preview {
+//    LastMealTuileView(meal: .carbonara)
+//}

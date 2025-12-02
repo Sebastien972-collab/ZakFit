@@ -37,10 +37,10 @@ struct ProfilView: View {
                                 NavigationLink {
                                     UserBasicInfoFormView()
                                 } label: {
-                                    ProfilNavigationLink(systemName: "figure.stand", title: "Information de base", subtitle: "32 ans • 180 cm • 85 kg", color: .customGreen)
+                                    ProfilNavigationLink(systemName: "figure.stand", title: "Information de base", subtitle: "32 ans • \(currentUser.heightCm) cm • \(currentUser.currentWeightKg) kg", color: .customGreen)
                                 }
                                 NavigationLink {
-                                    Text("Slection des objectifs")
+                                    Text("Selection des objectifs")
                                 } label: {
                                     ProfilNavigationLink(systemName: "dumbbell.fill", title: "Niveau d'activité ", subtitle: "Modérément actif", color: .orange)
                                 }

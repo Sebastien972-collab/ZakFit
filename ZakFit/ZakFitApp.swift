@@ -10,10 +10,12 @@ import SwiftUI
 @main
 struct ZakFitApp: App {
     @State private var tabViewModel: TabViewModel = .init()
+    @State private var addMealViewModel: AddMealViewModel = .init()
     var body: some Scene {
         WindowGroup {
             MainTabView()
                 .environment(tabViewModel)
+                .environment(addMealViewModel)
         }
     }
 }

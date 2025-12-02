@@ -32,28 +32,16 @@
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Info.plist,
-				Shared/Model/IntExtension.swift,
 			);
 			target = CF45E26B2ECB42FF00CBDDDC /* ZakFit */;
 		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
-
-/* Begin PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet section */
-		CF7B9EFC2ECF70ED008E811C /* Exceptions for "ZakFit" folder in "Copy Bundle Resources" phase from "ZakFit" target */ = {
-			isa = PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet;
-			buildPhase = CF45E26A2ECB42FF00CBDDDC /* Resources */;
-			membershipExceptions = (
-				Shared/Model/IntExtension.swift,
-			);
-		};
-/* End PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		CF45E26E2ECB42FF00CBDDDC /* ZakFit */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
 				CF2E0F792ECCF27F003A16D5 /* Exceptions for "ZakFit" folder in "ZakFit" target */,
-				CF7B9EFC2ECF70ED008E811C /* Exceptions for "ZakFit" folder in "Copy Bundle Resources" phase from "ZakFit" target */,
 			);
 			path = ZakFit;
 			sourceTree = "<group>";

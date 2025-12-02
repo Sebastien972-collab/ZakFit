@@ -7,15 +7,17 @@
 
 import Foundation
 
+@MainActor
 @Observable
-class DashboardViewModel {
-    var lastMeal: [Meal] = []
+final class DashboardViewModel {
+    var lastMeal: [MealResponse] = []
     
-    init() {
-        fetchLastMeal()
-    }
-    
-    func fetchLastMeal(){
-        self.lastMeal = Meal.pastaMeals.suffix(3)
+    func fetchLastMeal() async  {
+        do {
+            self.lastMeal = try await MealService.shared.getAllMeal()
+        } catch  {
+            print(error.localizedDescription)
+        }
+       
     }
 }

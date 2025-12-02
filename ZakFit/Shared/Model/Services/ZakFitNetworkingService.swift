@@ -14,6 +14,7 @@
 //
 
 import Foundation
+import SJDToolbox
 
 /// A lightweight networking layer responsible for performing HTTP requests and decoding JSON responses.
 ///

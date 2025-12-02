@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import SJDToolbox
 
 final class UserService {
     static let shared = UserService()

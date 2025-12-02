@@ -12,6 +12,7 @@ enum TypeOfMeal: String, CaseIterable, Codable {
     case breakfast = "Petit-déjeuner"
     case lunch = "Déjeuner"
     case dinner = "Dîner"
+    case collation = "Collation"
     
     var iconName: String {
         switch self {
@@ -20,6 +21,8 @@ enum TypeOfMeal: String, CaseIterable, Codable {
         case .lunch:
              "sunrise.fill"
         case .dinner:
+            "frying.pan.fill"
+        case .collation:
             "frying.pan.fill"
         }
     }
@@ -30,6 +33,8 @@ enum TypeOfMeal: String, CaseIterable, Codable {
         case .lunch:
             "lunch"
         case .dinner:
+            "dinner"
+        case .collation:
             "dinner"
         }
     }

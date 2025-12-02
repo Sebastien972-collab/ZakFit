@@ -45,4 +45,5 @@ struct NutritionView: View {
 
 #Preview {
     NutritionView()
+        .environment(AddMealViewModel())
 }

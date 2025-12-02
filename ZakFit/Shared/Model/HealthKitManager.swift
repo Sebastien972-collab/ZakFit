@@ -1,8 +1,8 @@
 //
-//  HealthKitManager.swift
-//  ZakFit
+//  HealthKitManager.swift
+//  ZakFit
 //
-//  Created by Sébastien Daguin on 18/11/2025.
+//  Created by Sébastien Daguin on 18/11/2025.
 //
 
 import Foundation
@@ -16,7 +16,7 @@ final class HealthKitManager {
     private init() {}
 
     // MARK: - Types que ZakFit peut lire
-     var readTypes: Set<HKObjectType> {
+    var readTypes: Set<HKObjectType> {
         [
             HKObjectType.quantityType(forIdentifier: .stepCount)!,
             HKObjectType.quantityType(forIdentifier: .activeEnergyBurned)!,
@@ -34,9 +34,14 @@ final class HealthKitManager {
         try await store.requestAuthorization(toShare: [], read: readTypes)
     }
 
-    // MARK: - FETCH: Pas du jour
-    func stepsToday() async throws -> Double {
-        guard let type = HKQuantityType.quantityType(forIdentifier: .stepCount) else { return 0 }
+    // --- Fonction Générique de Statistiques (Optimisation) ---
+    
+    /// Récupère la somme cumulative d'un type HKQuantity pour la journée en cours.
+    /// - Parameters:
+    ///   - typeIdentifier: L'identifiant du type de quantité (e.g., .stepCount).
+    ///   - unit: L'unité de mesure pour la conversion (e.g., .count()).
+    private func fetchCumulativeSum(for typeIdentifier: HKQuantityTypeIdentifier, unit: HKUnit) async throws -> Double {
+        guard let type = HKQuantityType.quantityType(forIdentifier: typeIdentifier) else { return 0 }
 
         let start = Calendar.current.startOfDay(for: .now)
         let predicate = HKQuery.predicateForSamples(withStart: start, end: .now)
@@ -49,45 +54,50 @@ final class HealthKitManager {
             ) { _, result, error in
                 
                 if let error { continuation.resume(throwing: error); return }
-                let value = result?.sumQuantity()?.doubleValue(for: .count()) ?? 0
+                let value = result?.sumQuantity()?.doubleValue(for: unit) ?? 0
                 continuation.resume(returning: value)
             }
 
             store.execute(query)
         }
     }
+    
+    // --- Utilisation de la fonction générique ---
+    
+    // MARK: - FETCH: Pas du jour
+    func stepsToday() async throws -> Double {
+        return try await fetchCumulativeSum(for: .stepCount, unit: .count())
+    }
 
     // MARK: - FETCH: Calories actives du jour
     func activeEnergyToday() async throws -> Double {
-        guard let type = HKQuantityType.quantityType(forIdentifier: .activeEnergyBurned) else { return 0 }
+        return try await fetchCumulativeSum(for: .activeEnergyBurned, unit: .kilocalorie())
+    }
 
-        let start = Calendar.current.startOfDay(for: .now)
-        let predicate = HKQuery.predicateForSamples(withStart: start, end: .now)
-
-        return try await withCheckedThrowingContinuation { continuation in
-            let query = HKStatisticsQuery(
-                quantityType: type,
-                quantitySamplePredicate: predicate,
-                options: .cumulativeSum
-            ) { _, result, error in
-                
-                if let error { continuation.resume(throwing: error); return }
-                let kcal = result?.sumQuantity()?.doubleValue(for: .kilocalorie()) ?? 0
-                continuation.resume(returning: kcal)
-            }
-
-            store.execute(query)
-        }
+    // MARK: - FETCH: Minutes d'exercice
+    func exerciseMinutesToday() async throws -> Double {
+        return try await fetchCumulativeSum(for: .appleExerciseTime, unit: .minute())
     }
 
     // MARK: - FETCH: Workouts
     func workouts() async throws -> [HKWorkout] {
-        try await withCheckedThrowingContinuation { continuation in
+        
+        let startOfToday = Calendar.current.startOfDay(for: .now)
+        // Filtre les workouts uniquement pour aujourd'hui
+        let predicate = HKQuery.predicateForSamples(withStart: startOfToday, end: .now, options: .strictStartDate)
+        
+        // Trie par date de fin descendante (plus récent en premier)
+        let sortDescriptor = NSSortDescriptor(
+            key: HKSampleSortIdentifierEndDate,
+            ascending: false
+        )
+        
+        return try await withCheckedThrowingContinuation { continuation in
             let query = HKSampleQuery(
                 sampleType: .workoutType(),
-                predicate: nil,
+                predicate: predicate, // Utilise le filtre du jour
                 limit: HKObjectQueryNoLimit,
-                sortDescriptors: nil
+                sortDescriptors: [sortDescriptor]
             ) { _, samples, error in
                 
                 if let error { continuation.resume(throwing: error); return }
@@ -129,45 +139,23 @@ final class HealthKitManager {
     func refreshAll() async throws -> HealthSnapshot {
         async let steps = stepsToday()
         async let energy = activeEnergyToday()
+        async let minutes = exerciseMinutesToday()
         async let w = workouts()
 
         return try await HealthSnapshot(
             steps: steps,
             activeEnergy: energy,
+            exerciseMinutes: minutes, // Ajout de la nouvelle donnée
             workouts: w
         )
     }
-    func exerciseMinutesToday() async throws -> Double {
-            guard let type = HKQuantityType.quantityType(forIdentifier: .appleExerciseTime) else { return 0 }
-
-            let start = Calendar.current.startOfDay(for: .now)
-            let predicate = HKQuery.predicateForSamples(withStart: start, end: .now)
-
-            return try await withCheckedThrowingContinuation { continuation in
-                let query = HKStatisticsQuery(
-                    quantityType: type,
-                    quantitySamplePredicate: predicate,
-                    options: .cumulativeSum
-                ) { _, result, error in
-                    
-                    if let error {
-                        continuation.resume(throwing: error)
-                        return
-                    }
-                    
-                    // Apple stocke le temps d'exercice en minutes
-                    let minutes = result?.sumQuantity()?.doubleValue(for: .minute()) ?? 0
-                    continuation.resume(returning: minutes)
-                }
-
-                store.execute(query)
-            }
-        }
 }
 
 // MARK: - DTO Snapshot
+// Mise à jour de la structure pour inclure les minutes d'exercice
 struct HealthSnapshot: Sendable {
     let steps: Double
     let activeEnergy: Double
+    let exerciseMinutes: Double
     let workouts: [HKWorkout]
 }

@@ -11,6 +11,7 @@ import Foundation
 @Observable
 final class DashboardViewModel {
     var lastMeal: [MealResponse] = []
+    var lastActivity: [TrainingResponse] = []
     
     func fetchLastMeal() async  {
         do {
@@ -19,5 +20,13 @@ final class DashboardViewModel {
             print(error.localizedDescription)
         }
        
+    }
+    
+    func fetchLastActivity() async {
+        do {
+            self.lastActivity = try await TrainingService.shared.getAllTrainings()
+        } catch  {
+            print(error.localizedDescription)
+        }
     }
 }

@@ -121,7 +121,6 @@ final class SettingsViewModel {
     // MARK: - Suppression du compte
     func deleteAccount() {
         print("Suppression du compte…")
-        // TODO: Appeler API Vapor : DELETE /user
+        
     }
-    
 }

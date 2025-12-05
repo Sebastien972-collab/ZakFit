@@ -28,9 +28,10 @@ final class AddMealViewModel {
     @Sendable
     func saveMeal() async {
         var meal = Meal(id: .init(), name: mealName, type: .breakfast, foods: foods)
-        meal.foods =  foods
+        meal.foods = foods
         do {
             let meal = try await MealService.shared.createMeal(meal: meal)
+            let items =  try await MealService.shared.addItemsToMeal(mealItem: foods, mealId: meal.id)
             
         } catch  {
             print(error.localizedDescription)

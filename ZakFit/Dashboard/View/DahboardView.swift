@@ -11,6 +11,7 @@ import SJDToolbox
 struct DasboardView: View {
     @State private var dashboardVm: DashboardViewModel = .init()
     @State private var showAddMealView: Bool = false
+    @State private var showAddTrainningView: Bool = false
     private var currentUser: User = UserManager.shared.currentUser
     var body: some View {
         @Bindable var dashboardVm = dashboardVm 
@@ -57,20 +58,27 @@ struct DasboardView: View {
                                 QuickActionButton(sfSymbol: "figure.run",
                                                   title: "Entraînement",
                                                   color: .suggestionPurple,
-                                                  action: {})
+                                                  action: {
+                                    showAddTrainningView.toggle()
+                                })
+                                .sheet(isPresented: $showAddTrainningView) {
+                                    AddTrainingView()
+                                        .presentationDetents([.medium, .large])
+                                        .presentationDragIndicator(.hidden)
+                                }
                             }
                             
-                            GridRow {
-                                QuickActionButton(sfSymbol: "figure.stand.line.dotted.figure.stand",
-                                                  title: "Poids",
-                                                  color: .orange,
-                                                  action: {})
-                                
-                                QuickActionButton(sfSymbol: "chart.line.uptrend.xyaxis",
-                                                  title: "Progrès",
-                                                  color: .blue,
-                                                  action: {})
-                            }
+//                            GridRow {
+//                                QuickActionButton(sfSymbol: "figure.stand.line.dotted.figure.stand",
+//                                                  title: "Poids",
+//                                                  color: .orange,
+//                                                  action: {})
+//                                
+//                                QuickActionButton(sfSymbol: "chart.line.uptrend.xyaxis",
+//                                                  title: "Progrès",
+//                                                  color: .blue,
+//                                                  action: {})
+//                            }
                         }
                     }
                     .padding(.horizontal)
@@ -81,9 +89,28 @@ struct DasboardView: View {
                         HydratationView(litre: 1.25)
                     }
                     DashboardSectionView(title: "Repas récent") {
+                        ForEach(dashboardVm.lastMeal) { meal in
+                            NavigationLink {
+                                MealDetailView(meal: meal)
+                            } label: {
+                                LastMealTuileView(meal: meal)
+                            }
+
+                        }
+                        .navigationTitle("Repas")
                     } content: {
                         ForEach(dashboardVm.lastMeal.suffix(3)) { meal in
                             LastMealTuileView(meal: meal)
+                        }
+                    }
+                    DashboardSectionView(title: "Entrainnements récent") {
+                        ForEach(dashboardVm.lastActivity) { trainning in
+                           LastActivityTuileView(training: trainning)
+                        }
+                        .navigationTitle("Entrainnements")
+                    } content: {
+                        ForEach(dashboardVm.lastActivity.suffix(3)) { trainning in
+                           LastActivityTuileView(training: trainning)
                         }
                     }
                     Spacer()
@@ -96,6 +123,7 @@ struct DasboardView: View {
                 do {
                     try await UserManager.shared.fetchProfil()
                     await dashboardVm.fetchLastMeal()
+                    await dashboardVm.fetchLastActivity()
                 } catch {
                     print("Error fetching user: \(error.localizedDescription)")
                 }

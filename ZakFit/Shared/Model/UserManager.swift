@@ -22,4 +22,13 @@ final class UserManager {
     func uppdateProfil(with user: User) async throws {
         
     }
+    
+    /// Déconnecte l'utilisateur courant et réinitialise l'état local
+    func logout(callback: (() -> Void)? = nil) {
+        do {
+            try KeychainManager.shared.deleteToken()
+        } catch  {
+            print(error.localizedDescription)
+        }
+    }
 }

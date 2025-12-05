@@ -9,6 +9,7 @@ import SwiftUI
 
 struct SettingsView: View {
     @State private var viewModel = SettingsViewModel()
+    @Environment(TabViewModel.self) private var tabVm: TabViewModel
     private var currentUser: User {
         UserManager.shared.currentUser
     }
@@ -49,7 +50,9 @@ struct SettingsView: View {
                             .padding(.vertical, 4)
                         }
                         Button {
-                            viewModel.logout()
+                            UserManager.shared.logout {
+                                tabVm.authState = .notAuthenticated
+                            }
                         } label: {
                             Text("Se déconnecter")
                                 .font(.headline)
@@ -80,7 +83,18 @@ struct SettingsView: View {
                         }
                         
                         Button {
-                            viewModel.requestHealthAuthorization()
+                            Task {
+                                do {
+                                    guard HealthKitManager.shared.canUseHealthKit() else {
+                                        print("HealthKit non disponible sur cet appareil")
+                                        return
+                                    }
+                                    try await HealthKitManager.shared.requestAuthorization()
+                                    await viewModel.updateHealthStatus()
+                                } catch {
+                                    print("Erreur HealthKit :", error.localizedDescription)
+                                }
+                            }
                         } label: {
                             Text(viewModel.healthAuthorized ? "Mettre à jour les permissions" : "Activer l’accès Santé")
                                 .font(.headline)

@@ -149,6 +149,9 @@ final class HealthKitManager {
             workouts: w
         )
     }
+    func canUseHealthKit() -> Bool {
+        HKHealthStore.isHealthDataAvailable()
+    }
 }
 
 // MARK: - DTO Snapshot

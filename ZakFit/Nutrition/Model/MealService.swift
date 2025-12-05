@@ -30,12 +30,10 @@ final class MealService {
     }
     func createMeal(meal: Meal) async throws -> Meal {
         let mealData = try encoder.encode(MealData(from: meal))
-        let apiRequest = APIRequest(endpoint: "meals", httpMethod: .POST, body: mealData )
+        let apiRequest = APIRequest(endpoint: "meals", httpMethod: .POST, body: mealData)
         let token = try secutity.getToken()
         let mealResponse = try await networking.request(apiRequest, responseType: Meal.self, token: token)
-        if meal.foods.isNotEmpty {
-            try await addItemsToMeal(mealItem: meal.foods, mealId: mealResponse.id)
-        }
+     //   try await addItemsToMeal(mealItem: meal.foods, mealId: mealResponse.id)
         return mealResponse
     }
     
@@ -46,11 +44,40 @@ final class MealService {
         let token = try secutity.getToken()
         _ = try await networking.request(apiRequest, responseType: MealItemData.self, token: token)
     }
-    func addItemsToMeal(mealItem: [FoodItem], mealId: UUID) async throws {
-        let mealItemData = try encoder.encode(mealItem.map { MealItemData(from: $0, mealId: mealId)})
-        print("Item envoyé: \(mealItemData)")
-        let apiRequest = APIRequest(endpoint: "meal-items/all", httpMethod: .POST, body: mealItemData )
+    func addItemsToMeal(mealItem: [FoodItem], mealId: UUID) async throws -> [MealItemResponse] {
+            // On mappe les FoodItem -> DTO pour l’API
+            let mealItemData = try encoder.encode(
+                mealItem.map { MealItemData(from: $0, mealId: mealId) }
+            )
+            print("Items envoyés: \(mealItemData)")
+            
+            let apiRequest = APIRequest(
+                endpoint: "meal-items/all",
+                httpMethod: .POST,
+                body: mealItemData
+            )
+            let token = try secutity.getToken()
+            
+            // ⬇️ Ici on décode bien UN TABLEAU
+            let response = try await networking.request(
+                apiRequest,
+                responseType: [MealItemResponse].self,
+                token: token
+            )
+            
+            return response
+        }
+}
+extension MealService {
+    func getItemsForMeal(mealId: UUID) async throws -> [MealItemResponse] {
+        let endpoint = "meal-items/\(mealId.uuidString)"
+        let apiRequest = APIRequest(endpoint: endpoint, httpMethod: .GET)
         let token = try secutity.getToken()
-        _ = try await networking.request(apiRequest, responseType: MealItemData.self, token: token)
+        
+        return try await networking.request(
+            apiRequest,
+            responseType: [MealItemResponse].self,
+            token: token
+        )
     }
 }

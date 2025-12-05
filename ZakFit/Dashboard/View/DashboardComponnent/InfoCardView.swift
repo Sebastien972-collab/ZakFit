@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct InfoCardView: View {
-    @State private var snapshot: HealthSnapshot = .init(steps: 0, activeEnergy: 0, workouts: [])
+    @State private var snapshot: HealthSnapshot = .init(steps: 0, activeEnergy: 0, exerciseMinutes: 0, workouts: [])
     @State private var minutes: Int = 0
     var body: some View {
         InformationCardView {
@@ -27,7 +27,7 @@ struct InfoCardView: View {
                 let activeEnergyBurned = try await HealthKitManager.shared.activeEnergyToday()
                 let workouts = try await HealthKitManager.shared.workouts()
                 minutes = Int(try await HealthKitManager.shared.exerciseMinutesToday())
-                let snap = HealthSnapshot(steps: stepCount, activeEnergy: activeEnergyBurned, workouts: workouts)
+                let snap = HealthSnapshot(steps: stepCount, activeEnergy: activeEnergyBurned, exerciseMinutes: 9, workouts: workouts)
                 
                 self.snapshot = snap
             } catch {
